@@ -131,6 +131,9 @@
         line-height: 1.6;
       }
 
+      a{
+        text-decoration: none;
+      }
       .card-button {
         background-color: var(--primary);
         color: white;
@@ -170,32 +173,31 @@
       <h2 class="page-title">Patient Services</h2>
 
       <div class="cards-container">
+        <a href="new.html">
         <div class="card" onclick="location.href='book-appointment.html'">
           <div class="card-icon">📅</div>
           <h3>BOOK AN APPOINTMENT</h3>
           <p>Schedule a new consultation with our experienced doctors</p>
-          <a href="appointment.html">
             <button class="card-button">Book Now</button>
-          </a>
         </div>
-
+      </a>
+      <a href="video.html">
         <div class="card" onclick="location.href='view-appointment.html'">
           <div class="card-icon">🗓️</div>
           <h3>ALREADY HAVE AN APPOINTMENT</h3>
           <p>View or manage your existing appointments</p>
-          <a href="video.html">
             <button class="card-button">View Details</button>
-          </a>
         </div>
-
+      </a>
+      <a href="prescription.html">
         <div class="card" onclick="location.href='prescription.html'">
           <div class="card-icon">📋</div>
           <h3>ACCESS TO PRESCRIPTION/DETAILS</h3>
           <p>Access your medical records and prescriptions</p>
-          <a href="prescription.html">
             <button class="card-button">View Details</button>
-          </a>
+          
         </div>
+      </a>
       </div>
     </main>
 
