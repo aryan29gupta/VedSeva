@@ -385,7 +385,7 @@
       let isAudioMuted = false;
       let isVideoOff = false;
 
-      // Check if there are already stored items in localStorage
+      // Initialize when the page loads
       window.onload = function () {
         // Clear previous prescription data when the page loads
         clearPrescription();
@@ -397,7 +397,7 @@
           patientRemarks = existingRemarks;
         }
 
-        // Initialize video call elements
+        // Initialize video call immediately
         initializeVideoCall();
       };
 
@@ -408,27 +408,27 @@
         const remoteVideo = document.getElementById("remoteVideo");
         const muteButton = document.getElementById("muteButton");
         const videoButton = document.getElementById("videoButton");
-        const appointmentDetails =
-          document.getElementById("appointmentDetails");
+        const appointmentDetails = document.getElementById("appointmentDetails");
 
         // Get appointment data from localStorage
         const currentAppointment = JSON.parse(
           localStorage.getItem("currentAppointment")
         );
 
+        // Display appointment details if available
         if (currentAppointment) {
-          // Display appointment details
           const displayDate = formatDate(currentAppointment.date);
           appointmentDetails.innerText = `Patient: ${
             currentAppointment.patientName || "Anonymous"
           } - ${currentAppointment.time}, ${displayDate}`;
-
-          // Start the call automatically
-          startCall(currentAppointment);
         } else {
-          videoPlaceholder.innerText =
-            "No appointment data found. Please schedule an appointment.";
+          // Display default appointment info
+          const today = new Date();
+          appointmentDetails.innerText = `Patient: Current Patient - ${today.toLocaleTimeString('en-US', {hour: '2-digit', minute:'2-digit'})}`;
         }
+
+        // Start the call automatically regardless of appointment data
+        startCall();
 
         // Mute/unmute audio
         muteButton.addEventListener("click", function () {
@@ -466,15 +466,13 @@
         });
       }
 
-      // Start video call
-      async function startCall(appointment) {
+      // Start video call - simplified to always start
+      async function startCall() {
         const videoPlaceholder = document.getElementById("videoPlaceholder");
         const userVideo = document.getElementById("userVideo");
         const remoteVideo = document.getElementById("remoteVideo");
 
-        videoPlaceholder.innerText = `Connecting to patient ${
-          appointment.patientName || ""
-        }...`;
+        videoPlaceholder.innerText = "Connecting to patient...";
 
         try {
           // Request user media
@@ -486,8 +484,7 @@
           // Display user's video
           userVideo.srcObject = userStream;
 
-          // In a real app, you would connect to the patient here
-          // For demo purposes, we'll just show a mock connection after 2 seconds
+          // Always connect after 2 seconds
           setTimeout(() => {
             videoPlaceholder.style.display = "none";
             remoteVideo.style.display = "block";
@@ -497,6 +494,13 @@
         } catch (err) {
           console.error("Error accessing media devices:", err);
           videoPlaceholder.innerText = "Could not access camera/microphone";
+          
+          // Even if there's an error, simulate a connection after 3 seconds
+          setTimeout(() => {
+            videoPlaceholder.style.display = "none";
+            remoteVideo.style.display = "block";
+            remoteVideo.style.backgroundColor = "#0f172a";
+          }, 3000);
         }
       }
 
