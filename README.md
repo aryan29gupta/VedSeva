@@ -22,9 +22,7 @@ https://vedsevanew.vercel.app/
 5. *Prescriptions & Records*: Doctors can provide prescriptions, which are stored for future reference.
 6. *Medicos directory*: User gets direct access to nearby medical shops and testing laboratories. 
 
-For testing purposes use the following credentials:
-- Username: 112233445566
-- Password: 1234567890
+
 <br>
 This project aims to bridge the healthcare gap in rural areas by making medical expertise more accessible through technology.
 
