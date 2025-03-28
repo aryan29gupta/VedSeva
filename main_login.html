@@ -342,6 +342,7 @@
 
                 // Store user data in localStorage for use in other pages
                 localStorage.setItem("userData", JSON.stringify(userData));
+                localStorage.setItem("patientName", userData.name || "Patient");
               }
 
               // Alert success and redirect to cards page

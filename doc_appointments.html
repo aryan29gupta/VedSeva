@@ -3,8 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Medical Appointments</title>
+    <title>Doctor Appointments | VaidSeva</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-light: #e0f2fe;
+        --success: #16a34a;
+        --warning: #f59e0b;
+        --danger: #dc2626;
+        --gray: #6b7280;
+        --light-gray: #f3f4f6;
+        --white: #ffffff;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+
       * {
         margin: 0;
         padding: 0;
@@ -14,385 +31,890 @@
       
 
       body {
-        background-color: #f0f7ff;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
+        background-color: #f8fafc;
+        color: #1e293b;
+        line-height: 1.6;
       }
 
       .container {
-        width: 100%;
-        max-width: 900px;
-        background-color: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        min-height: 600px; /* Increased minimum height */
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
       }
 
+      /* Header Styles */
       .header {
-        background-color: #1a73e8;
-        color: white;
-        padding: 20px;
-        text-align: center;
-        font-size: 2rem;
-        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #e2e8f0;
       }
 
-      .appointments-list {
-        padding: 20px;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-
-      th {
-        background-color: #f1f8ff;
-        padding: 12px;
-        text-align: left;
-        border-bottom: 2px solid #e0e0e0;
-        color: #555;
+      .header-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
         font-weight: 600;
+        color: var(--primary);
       }
 
-      td {
-        padding: 16px 12px;
-        border-bottom: 1px solid #eee;
+      .header-controls {
+        display: flex;
+        gap: 15px;
       }
 
-      .appointment-row:hover {
-        background-color: #f8f9ff;
+      .search-box {
+        position: relative;
+        width: 250px;
       }
 
-      .btn {
-        padding: 8px 16px;
-        border-radius: 50px;
-        border: none;
+      .search-box input {
+        width: 100%;
+        padding: 8px 15px 8px 35px;
+        border-radius: 20px;
+        border: 1px solid #e2e8f0;
+        background-color: var(--white);
+        transition: all 0.3s ease;
+      }
+
+      .search-box input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--gray);
+      }
+
+      .filter-btn {
+        background-color: var(--white);
+        border: 1px solid #e2e8f0;
+        padding: 8px 15px;
+        border-radius: 20px;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
         font-weight: 500;
         transition: all 0.2s ease;
       }
 
+      .filter-btn:hover {
+        background-color: var(--light-gray);
+      }
+
+      /* Appointments Table */
+      .appointments-container {
+        background-color: var(--white);
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .appointments-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background-color: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .appointments-title {
+        font-weight: 600;
+        color: #334155;
+      }
+
+      .appointments-count {
+        background-color: var(--primary);
+        color: white;
+        padding: 3px 8px;
+        border-radius: 10px;
+        font-size: 0.8rem;
+      }
+
+      .appointments-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .appointments-table th {
+        background-color: #f1f5f9;
+        padding: 12px 15px;
+        text-align: left;
+        font-weight: 600;
+        color: #64748b;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .appointments-table td {
+        padding: 15px;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: middle;
+      }
+
+      .appointments-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .appointments-table tr:hover {
+        background-color: #f8fafc;
+      }
+
+      /* Patient Info */
+      .patient-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .patient-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #e0f2fe;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+
+      .patient-details {
+        line-height: 1.4;
+      }
+
+      .patient-name {
+        font-weight: 500;
+        color: #1e293b;
+      }
+
+      .patient-contact {
+        font-size: 0.8rem;
+        color: var(--gray);
+      }
+
+      /* Status Badges */
+      .status-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .status-upcoming {
+        background-color: #e0f2fe;
+        color: var(--primary);
+      }
+
+      .status-in-progress {
+        background-color: #fef9c3;
+        color: #b45309;
+      }
+
+      .status-completed {
+        background-color: #dcfce7;
+        color: var(--success);
+      }
+
+      .status-canceled {
+        background-color: #fee2e2;
+        color: var(--danger);
+      }
+
+      /* Problem Badge */
+      .problem-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        background-color: #f1f5f9;
+        color: #334155;
+      }
+
+      /* Time Badge */
+      .time-badge {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: 500;
+        color: #334155;
+      }
+
+      .time-badge i {
+        color: var(--gray);
+      }
+
+      /* Action Buttons */
+      .action-btn {
+        padding: 6px 12px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.2s ease;
+      }
+
+      .action-btn i {
+        font-size: 0.8rem;
+      }
+
+      .btn-view {
+        background-color: var(--primary-light);
+        color: var(--primary);
+      }
+
+      .btn-view:hover {
+        background-color: #bfdbfe;
+      }
+
       .btn-call {
-        background-color: #00c853;
+        background-color: var(--primary);
         color: white;
       }
 
       .btn-call:hover {
-        background-color: #00a844;
-        box-shadow: 0 2px 8px rgba(0, 200, 83, 0.3);
+        background-color: var(--primary-dark);
       }
 
-      .problem-badge {
-        background-color: #ffebee;
-        color: #d32f2f;
-        padding: 4px 10px;
-        border-radius: 4px;
-        font-size: 0.9rem;
-        display: inline-block;
+      .btn-complete {
+        background-color: var(--success);
+        color: white;
       }
 
-      .time-badge {
-        font-weight: 600;
-        color: #1a73e8;
+      .btn-complete:hover {
+        background-color: #15803d;
       }
 
-      .empty-state {
-        padding: 40px;
-        text-align: center;
-        color: #777;
+      .btn-cancel {
+        background-color: var(--danger);
+        color: white;
       }
 
-      /* Dropdown styles - updated for click instead of hover */
+      .btn-cancel:hover {
+        background-color: #b91c1c;
+      }
+
+      /* Dropdown Menu */
       .dropdown {
         position: relative;
         display: inline-block;
       }
 
       .dropdown-btn {
-        background-color: white;
-        color: #333;
-        border: 1px solid #ccc;
-        padding: 8px 16px;
-        border-radius: 50px;
+        background-color: transparent;
+        border: none;
         cursor: pointer;
+        color: var(--primary);
         font-weight: 500;
         display: flex;
         align-items: center;
         gap: 5px;
       }
 
-      .dropdown-btn:hover {
-        background-color: #f0f0f0;
-      }
-
-      .dropdown-btn:after {
-        content: "";
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-top: 5px solid #333;
-        margin-left: 5px;
-      }
-
       .dropdown-content {
         display: none;
         position: absolute;
         background-color: white;
-        min-width: 180px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        border-radius: 8px;
-        z-index: 1;
+        min-width: 200px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
+        z-index: 10;
         margin-top: 5px;
-        left: 0;
+        right: 0;
       }
 
       .dropdown-content a {
-        color: #333;
+        display: block;
         padding: 10px 15px;
         text-decoration: none;
-        display: block;
-        font-size: 14px;
+        color: #334155;
+        font-size: 0.9rem;
         transition: background-color 0.2s;
       }
 
       .dropdown-content a:hover {
-        background-color: #f5f8ff;
+        background-color: #f1f5f9;
       }
 
-      /* Show dropdown when active class is applied */
+      .dropdown-content a i {
+        margin-right: 8px;
+        color: var(--gray);
+        width: 16px;
+        text-align: center;
+      }
+
       .dropdown-active .dropdown-content {
         display: block;
       }
 
-      @media (max-width: 600px) {
-        .container {
-          border-radius: 0;
-        }
-
-        th,
-        td {
-          padding: 10px 8px;
-        }
-
-        .header {
-          padding: 16px;
-          font-size: 1.5rem;
-        }
-
-        .dropdown-content {
-          right: 0;
-          left: auto;
-        }
+      /* Empty State */
+      .empty-state {
+        padding: 40px;
+        text-align: center;
+        color: var(--gray);
       }
 
-      /* Modal styles for history view */
+      .empty-state i {
+        font-size: 3rem;
+        color: #e2e8f0;
+        margin-bottom: 15px;
+      }
+
+      .empty-state h3 {
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: #334155;
+      }
+
+      /* Modal Styles */
       .modal {
         display: none;
         position: fixed;
-        z-index: 100;
-        left: 0;
         top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
-        overflow: auto;
+        z-index: 100;
+        overflow-y: auto;
       }
 
       .modal-content {
         background-color: white;
-        margin: 10% auto;
-        padding: 20px;
-        border-radius: 10px;
-        width: 80%;
-        max-width: 600px;
+        margin: 5% auto;
+        width: 90%;
+        max-width: 700px;
+        border-radius: 8px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         position: relative;
       }
 
-      .close-modal {
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        font-size: 24px;
-        font-weight: bold;
-        cursor: pointer;
-        color: #777;
-      }
-
-      .close-modal:hover {
-        color: #333;
-      }
-
       .modal-header {
-        border-bottom: 1px solid #eee;
-        padding-bottom: 15px;
-        margin-bottom: 15px;
+        padding: 20px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
 
       .modal-title {
-        font-size: 18px;
+        font-size: 1.25rem;
         font-weight: 600;
+        color: #1e293b;
+      }
+
+      .modal-subtitle {
+        font-size: 0.9rem;
+        color: var(--gray);
+        margin-top: 5px;
+      }
+
+      .close-modal {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--gray);
+        transition: color 0.2s;
+      }
+
+      .close-modal:hover {
+        color: var(--danger);
       }
 
       .modal-body {
+        padding: 20px;
         max-height: 60vh;
         overflow-y: auto;
+      }
+
+      .history-section {
+        margin-bottom: 20px;
+      }
+
+      .history-section h4 {
+        color: var(--primary);
+        margin-bottom: 10px;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .history-section p {
+        white-space: pre-line;
+        line-height: 1.6;
+        background-color: #f8fafc;
+        padding: 12px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+      }
+
+      .modal-actions {
+        padding: 15px 20px;
+        border-top: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      /* Toast Notification */
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--primary);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: none;
+        z-index: 1000;
+        animation: slideIn 0.3s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+        .header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 15px;
+        }
+
+        .header-controls {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .search-box {
+          width: 100%;
+        }
+
+        .appointments-table {
+          display: block;
+          overflow-x: auto;
+        }
+
+        .modal-content {
+          margin: 10% auto;
+          width: 95%;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .appointments-table th,
+        .appointments-table td {
+          padding: 10px;
+          font-size: 0.85rem;
+        }
+
+        .action-btn {
+          padding: 5px 8px;
+          font-size: 0.75rem;
+        }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <div class="header">Appointments</div>
+      <!-- Header Section -->
+      <div class="header">
+        <div class="header-title">
+          <i class="fas fa-calendar-check"></i>
+          <span>Doctor Appointments</span>
+        </div>
+        <div class="header-controls">
+          <div class="search-box">
+            <i class="fas fa-search search-icon"></i>
+            <input
+              type="text"
+              placeholder="Search patients..."
+              id="searchInput"
+            />
+          </div>
+          <button class="filter-btn" id="filterBtn">
+            <i class="fas fa-filter"></i>
+            <span>Filter</span>
+          </button>
+        </div>
+      </div>
 
-      <div class="appointments-list">
-        <table>
+      <!-- Appointments Table -->
+      <div class="appointments-container">
+        <div class="appointments-header">
+          <div class="appointments-title">
+            Today's Appointments
+            <span class="appointments-count" id="appointmentsCount">0</span>
+          </div>
+        </div>
+
+        <table class="appointments-table">
           <thead>
             <tr>
-              <th>S.No</th>
-              <th>Patient Name</th>
+              <th>Patient</th>
               <th>Problem</th>
               <th>Time</th>
-              <th>Medical History</th>
-              <th>Action</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
-          <tbody id="appointments-table-body">
-            <!-- Appointments will be populated here via JavaScript -->
+          <tbody id="appointmentsTableBody">
+            <!-- Appointments will be loaded here -->
           </tbody>
         </table>
 
-        <div id="empty-state" class="empty-state" style="display: none">
-          <p>No appointments scheduled for today.</p>
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none">
+          <i class="far fa-calendar-times"></i>
+          <h3>No appointments scheduled</h3>
+          <p>All clear for today! Check back later for new appointments.</p>
         </div>
       </div>
     </div>
 
-    <!-- Modal for viewing history -->
+    <!-- Patient History Modal -->
     <div id="historyModal" class="modal">
       <div class="modal-content">
-        <span class="close-modal" onclick="closeHistoryModal()">&times;</span>
         <div class="modal-header">
-          <h3 id="modalTitle" class="modal-title">Medical History</h3>
+          <div>
+            <h3 class="modal-title" id="modalTitle">Patient Medical History</h3>
+            <p class="modal-subtitle" id="modalSubtitle"></p>
+          </div>
+          <button class="close-modal" onclick="closeModal()">&times;</button>
         </div>
-        <div id="modalBody" class="modal-body">
+        <div class="modal-body" id="modalBody">
           <!-- History content will be loaded here -->
+        </div>
+        <div class="modal-actions">
+          <button
+            class="action-btn btn-complete"
+            onclick="completeAppointment()"
+          >
+            <i class="fas fa-check"></i> Mark Complete
+          </button>
+          <button class="action-btn btn-cancel" onclick="cancelAppointment()">
+            <i class="fas fa-times"></i> Cancel Appointment
+          </button>
         </div>
       </div>
     </div>
 
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
     <script>
-      // Preset appointment data
+      // Enhanced appointment data
+      const loggedInPatientName =
+        localStorage.getItem("patientName") || "Jatin Yadav";
+
+      const selectedProblem =
+        localStorage.getItem("selectedProblem") || "Skin Problem";
+
+      // Enhanced appointment data
       const appointments = [
         {
           id: 1,
-          patientName: "Jatin Yadav",
-          problem: "Skin Problem",
-          time: "11:30am",
+          patientName: loggedInPatientName, // This will use the logged-in patient's name
+          patientInitials: loggedInPatientName
+            .split(" ")
+            .map((n) => n[0])
+            .join(""),
+          problem: selectedProblem,
+          time: "11:30 AM",
+          duration: "30 mins",
+          status: "in-progress",
           hasHistory: true,
+          contact: "+91 98765 43210",
+          email: "jatin.y@example.com",
+          lastVisit: "Jan 15, 2025",
         },
         {
           id: 2,
-          patientName: "Piyush",
+          patientName: "Piyush Sharma",
+          patientInitials: "PS",
           problem: "Annual Checkup",
-          time: "2:00pm",
+          time: "2:00 PM",
+          duration: "45 mins",
+          status: "upcoming",
           hasHistory: true,
+          contact: "+91 87654 32109",
+          email: "piyush.s@example.com",
+          lastVisit: "Dec 8, 2024",
         },
         {
           id: 3,
           patientName: "Kyra Gupta",
+          patientInitials: "KG",
           problem: "Respiratory Issues",
-          time: "11:00am",
+          time: "11:00 AM",
+          duration: "30 mins",
+          status: "upcoming",
           hasHistory: true,
+          contact: "+91 76543 21098",
+          email: "kyra.g@example.com",
+          lastVisit: "Feb 1, 2025",
         },
         {
           id: 4,
           patientName: "Sonam Patel",
+          patientInitials: "SP",
           problem: "Joint Pain",
-          time: "12:00pm",
+          time: "12:00 PM",
+          duration: "45 mins",
+          status: "upcoming",
           hasHistory: true,
+          contact: "+91 65432 10987",
+          email: "sonam.p@example.com",
+          lastVisit: "Jan 20, 2025",
+        },
+        {
+          id: 5,
+          patientName: "Rahul Verma",
+          patientInitials: "RV",
+          problem: "Fever & Cold",
+          time: "10:30 AM",
+          duration: "20 mins",
+          status: "completed",
+          hasHistory: false,
+          contact: "+91 94321 09876",
+          email: "rahul.v@example.com",
+          lastVisit: "Feb 5, 2025",
+        },
+        {
+          id: 6,
+          patientName: "Neha Singh",
+          patientInitials: "NS",
+          problem: "Diabetes Checkup",
+          time: "3:30 PM",
+          duration: "30 mins",
+          status: "upcoming",
+          hasHistory: true,
+          contact: "+91 83210 98765",
+          email: "neha.s@example.com",
+          lastVisit: "Jan 28, 2025",
         },
       ];
 
-      // Sample patient history data
+      // Enhanced patient history data
       const patientHistories = {
         1: {
           past: "Patient has a history of eczema since childhood. Last flare-up was 3 months ago. Previously prescribed topical corticosteroids. Known allergies to certain fabrics.",
-          previous:
-            "Last visit: Jan 15, 2025 - Treated for mild skin irritation\nNov 10, 2024 - Annual physical examination\nSep 5, 2024 - Skin biopsy (results negative for malignancy)",
-          medications:
-            "Triamcinolone 0.1% cream (as needed)\nCetirizine 10mg daily\nMultivitamin supplement",
-          allergies: "Wool\nNickel\nSulfites\nPenicillin (moderate reaction)",
-          lab: "Complete Blood Count (Feb 10, 2025): Within normal ranges\nAllergy Panel (Dec 5, 2024): Positive for dust mites, pollen",
+          previous: `- Jan 15, 2025: Treated for mild skin irritation
+- Nov 10, 2024: Annual physical examination
+- Sep 5, 2024: Skin biopsy (results negative for malignancy)`,
+          medications: `- Triamcinolone 0.1% cream (as needed)
+- Cetirizine 10mg daily
+- Multivitamin supplement`,
+          allergies: `- Wool
+- Nickel
+- Sulfites
+- Penicillin (moderate reaction)`,
+          lab: `- Complete Blood Count (Feb 10, 2025): Within normal ranges
+- Allergy Panel (Dec 5, 2024): Positive for dust mites, pollen`,
         },
         2: {
           past: "Patient has controlled hypertension for 5 years. Family history of cardiovascular disease. Underwent appendectomy in 2020.",
-          previous:
-            "Last visit: Dec 8, 2024 - Blood pressure check\nAug 22, 2024 - Flu vaccination\nMay 15, 2024 - Annual physical examination",
-          medications: "Lisinopril 10mg daily\nAspirin 81mg daily",
+          previous: `- Dec 8, 2024: Blood pressure check
+- Aug 22, 2024: Flu vaccination
+- May 15, 2024: Annual physical examination`,
+          medications: `- Lisinopril 10mg daily
+- Aspirin 81mg daily`,
           allergies: "No known allergies",
-          lab: "Lipid Panel (Jan 5, 2025): Slightly elevated LDL\nBlood Pressure: 135/85 mmHg (Feb 10, 2025)",
+          lab: `- Lipid Panel (Jan 5, 2025): Slightly elevated LDL
+- Blood Pressure: 135/85 mmHg (Feb 10, 2025)`,
         },
         3: {
           past: "History of asthma since age 12. Occasional bronchitis during winter months. Non-smoker.",
-          previous:
-            "Last visit: Feb 1, 2025 - Bronchitis treatment\nNov 30, 2024 - Pulmonary function test\nSep 15, 2024 - Flu vaccination",
-          medications:
-            "Albuterol inhaler (as needed)\nFluticasone inhaler (twice daily)\nSingulair 10mg (nightly)",
-          allergies: "Pollen\nDust\nPet dander\nSulfa drugs",
-          lab: "Chest X-ray (Feb 2, 2025): Normal\nPulmonary Function Test (Nov 30, 2024): Mild obstruction",
+          previous: `- Feb 1, 2025: Bronchitis treatment
+- Nov 30, 2024: Pulmonary function test
+- Sep 15, 2024: Flu vaccination`,
+          medications: `- Albuterol inhaler (as needed)
+- Fluticasone inhaler (twice daily)
+- Singulair 10mg (nightly)`,
+          allergies: `- Pollen
+- Dust
+- Pet dander
+- Sulfa drugs`,
+          lab: `- Chest X-ray (Feb 2, 2025): Normal
+- Pulmonary Function Test (Nov 30, 2024): Mild obstruction`,
         },
         4: {
           past: "Diagnosed with rheumatoid arthritis in 2022. Maternal history of osteoporosis. Fractured left wrist in 2019.",
-          previous:
-            "Last visit: Jan 20, 2025 - Joint pain follow-up\nNov 10, 2024 - Physical therapy evaluation\nJul 5, 2024 - Rheumatology consultation",
-          medications:
-            "Methotrexate 15mg weekly\nFolic acid 1mg daily\nIbuprofen 400mg (as needed for pain)",
-          allergies: "Shellfish\nNSAIDs (except ibuprofen)",
-          lab: "Rheumatoid Factor (Dec 15, 2024): Positive\nCRP (Dec 15, 2024): Elevated (15 mg/L)\nVitamin D: Slightly low (28 ng/mL)",
+          previous: `- Jan 20, 2025: Joint pain follow-up
+- Nov 10, 2024: Physical therapy evaluation
+- Jul 5, 2024: Rheumatology consultation`,
+          medications: `- Methotrexate 15mg weekly
+- Folic acid 1mg daily
+- Ibuprofen 400mg (as needed for pain)`,
+          allergies: `- Shellfish
+- NSAIDs (except ibuprofen)`,
+          lab: `- Rheumatoid Factor (Dec 15, 2024): Positive
+- CRP (Dec 15, 2024): Elevated (15 mg/L)
+- Vitamin D: Slightly low (28 ng/mL)`,
+        },
+        6: {
+          past: "Type 2 diabetes diagnosed in 2021. Currently managing with diet and medication. No hospitalizations related to diabetes.",
+          previous: `- Dec 12, 2024: HbA1c check (6.8%)
+- Sep 5, 2024: Foot examination
+- Jun 20, 2024: Ophthalmology consult`,
+          medications: `- Metformin 500mg twice daily
+- Atorvastatin 10mg nightly`,
+          allergies: "None reported",
+          lab: `- HbA1c (Dec 12, 2024): 6.8%
+- Fasting Glucose (Jan 15, 2025): 128 mg/dL
+- Lipid Panel (Jan 15, 2025): Within normal limits`,
         },
       };
 
-      // Function to render appointments
-      function renderAppointments() {
-        const tableBody = document.getElementById("appointments-table-body");
-        const emptyState = document.getElementById("empty-state");
+      // DOM Elements
+      const appointmentsTableBody = document.getElementById(
+        "appointmentsTableBody"
+      );
+      const emptyState = document.getElementById("emptyState");
+      const appointmentsCount = document.getElementById("appointmentsCount");
+      const searchInput = document.getElementById("searchInput");
+      const filterBtn = document.getElementById("filterBtn");
+      const historyModal = document.getElementById("historyModal");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalSubtitle = document.getElementById("modalSubtitle");
+      const modalBody = document.getElementById("modalBody");
+      const toast = document.getElementById("toast");
 
-        if (appointments.length === 0) {
-          tableBody.innerHTML = "";
+      // Current state
+      let currentAppointmentId = null;
+      let currentFilter = "all";
+      let filteredAppointments = [];
+
+      // Helper functions
+      function formatStatus(status) {
+        const statusMap = {
+          upcoming: "Upcoming",
+          "in-progress": "In Progress",
+          completed: "Completed",
+          canceled: "Canceled",
+        };
+        return statusMap[status] || status;
+      }
+
+      function showToast(message, type = "info") {
+        toast.textContent = message;
+        toast.style.backgroundColor =
+          type === "error" ? "var(--danger)" : "var(--primary)";
+        toast.style.display = "block";
+
+        setTimeout(() => {
+          toast.style.display = "none";
+        }, 3000);
+      }
+
+      function closeModal() {
+        historyModal.style.display = "none";
+        currentAppointmentId = null;
+      }
+
+      // Render appointments
+      function renderAppointments(appointmentsToRender = appointments) {
+        filteredAppointments = [...appointmentsToRender];
+
+        if (filteredAppointments.length === 0) {
+          appointmentsTableBody.innerHTML = "";
           emptyState.style.display = "block";
+          appointmentsCount.textContent = "0";
           return;
         }
 
         emptyState.style.display = "none";
+        appointmentsCount.textContent = filteredAppointments.length;
 
-        tableBody.innerHTML = appointments
+        appointmentsTableBody.innerHTML = filteredAppointments
           .map(
             (appointment) => `
-                <tr class="appointment-row" data-id="${appointment.id}">
-                    <td>${appointment.id}.</td>
-                    <td>${appointment.patientName}</td>
-                    <td><span class="problem-badge">${appointment.problem}</span></td>
-                    <td><span class="time-badge">${appointment.time}</span></td>
+                <tr>
                     <td>
-                        <div class="dropdown" id="dropdown-${appointment.id}">
-                            <button class="dropdown-btn" onclick="toggleDropdown(${appointment.id})">History</button>
-                            <div class="dropdown-content" id="dropdown-content-${appointment.id}">
-                                <a href="#" onclick="viewHistory(${appointment.id}, 'past')">Past Medical History</a>
-                                <a href="#" onclick="viewHistory(${appointment.id}, 'previous')">Previous Visits</a>
-                                <a href="#" onclick="viewHistory(${appointment.id}, 'medications')">Medications</a>
-                                <a href="#" onclick="viewHistory(${appointment.id}, 'allergies')">Allergies</a>
-                                <a href="#" onclick="viewHistory(${appointment.id}, 'lab')">Lab Results</a>
+                        <div class="patient-info">
+                            <div class="patient-avatar">${
+                              appointment.patientInitials
+                            }</div>
+                            <div class="patient-details">
+                                <div class="patient-name">${
+                                  appointment.patientName
+                                }</div>
+                                <div class="patient-contact">${
+                                  appointment.contact
+                                }</div>
                             </div>
                         </div>
                     </td>
                     <td>
-                        <button class="btn btn-call" onclick="startCall(${appointment.id})">
-                            Start call
-                        </button>
+                        <span class="problem-badge">${
+                          appointment.problem
+                        }</span>
+                    </td>
+                    <td>
+                        <span class="time-badge">
+                            <i class="far fa-clock"></i> ${appointment.time}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="status-badge status-${appointment.status}">
+                            ${formatStatus(appointment.status)}
+                        </span>
+                    </td>
+                    <td>
+                        <div style="display: flex; gap: 8px;">
+                            ${
+                              appointment.hasHistory
+                                ? `
+                            <button class="action-btn btn-view" onclick="viewHistory(${appointment.id})">
+                                <i class="fas fa-history"></i> History
+                            </button>`
+                                : ""
+                            }
+                            
+                            ${
+                              appointment.status === "in-progress"
+                                ? `
+                            <button class="action-btn btn-call" onclick="startCall(${appointment.id})">
+                                <i class="fas fa-video"></i> Call
+                            </button>`
+                                : ""
+                            }
+                            
+                            ${
+                              appointment.status === "upcoming"
+                                ? `
+                            <button class="action-btn btn-complete" onclick="completeAppointmentPrompt(${appointment.id})">
+                                <i class="fas fa-check"></i> Complete
+                            </button>`
+                                : ""
+                            }
+                        </div>
                     </td>
                 </tr>
             `
@@ -400,116 +922,147 @@
           .join("");
       }
 
-      // Function to toggle dropdown visibility
-      function toggleDropdown(id) {
-        // Close all other dropdowns first
-        document.querySelectorAll(".dropdown").forEach((dropdown) => {
-          if (dropdown.id !== `dropdown-${id}`) {
-            dropdown.classList.remove("dropdown-active");
-          }
-        });
+      // View patient history
+      function viewHistory(appointmentId) {
+        currentAppointmentId = appointmentId;
+        const appointment = appointments.find((a) => a.id === appointmentId);
 
-        // Toggle the clicked dropdown
-        const dropdown = document.getElementById(`dropdown-${id}`);
-        dropdown.classList.toggle("dropdown-active");
+        modalTitle.textContent = `${appointment.patientName}'s Medical History`;
+        modalSubtitle.textContent = `Appointment: ${appointment.time} | ${appointment.problem}`;
 
-        // Add event listener to close dropdown when clicking outside
-        setTimeout(() => {
-          document.addEventListener("click", closeDropdownsOnClickOutside);
-        }, 0);
+        modalBody.innerHTML = `
+                <div class="history-section">
+                    <h4><i class="fas fa-book-medical"></i> Past Medical History</h4>
+                    <p>${patientHistories[appointmentId].past}</p>
+                </div>
+                <div class="history-section">
+                    <h4><i class="fas fa-calendar-check"></i> Previous Visits</h4>
+                    <p>${patientHistories[appointmentId].previous}</p>
+                </div>
+                <div class="history-section">
+                    <h4><i class="fas fa-pills"></i> Current Medications</h4>
+                    <p>${patientHistories[appointmentId].medications}</p>
+                </div>
+                <div class="history-section">
+                    <h4><i class="fas fa-allergies"></i> Allergies</h4>
+                    <p>${patientHistories[appointmentId].allergies}</p>
+                </div>
+                <div class="history-section">
+                    <h4><i class="fas fa-flask"></i> Lab Results</h4>
+                    <p>${patientHistories[appointmentId].lab}</p>
+                </div>
+            `;
 
-        // Prevent the event from bubbling up
-        event.stopPropagation();
+        historyModal.style.display = "block";
       }
 
-      // Function to close dropdowns when clicking outside
-      function closeDropdownsOnClickOutside(e) {
-        const dropdowns = document.querySelectorAll(".dropdown");
-        let clickedInsideDropdown = false;
-
-        dropdowns.forEach((dropdown) => {
-          if (dropdown.contains(e.target)) {
-            clickedInsideDropdown = true;
-          }
-        });
-
-        if (!clickedInsideDropdown) {
-          dropdowns.forEach((dropdown) => {
-            dropdown.classList.remove("dropdown-active");
-          });
-          document.removeEventListener("click", closeDropdownsOnClickOutside);
-        }
-      }
-
-      // Function to view patient history
-      function viewHistory(appointmentId, historyType) {
-        const historyTypes = {
-          past: "Past Medical History",
-          previous: "Previous Visits",
-          medications: "Current Medications",
-          allergies: "Allergies and Reactions",
-          lab: "Laboratory Results",
-        };
-
-        // Close dropdown after selecting an option
-        document.querySelectorAll(".dropdown").forEach((dropdown) => {
-          dropdown.classList.remove("dropdown-active");
-        });
-
-        // Get the modal elements
-        const modal = document.getElementById("historyModal");
-        const modalTitle = document.getElementById("modalTitle");
-        const modalBody = document.getElementById("modalBody");
-
-        // Set the modal content
-        modalTitle.textContent = `${historyTypes[historyType]} - ${
-          appointments.find((a) => a.id === appointmentId).patientName
-        }`;
-
-        // Get the patient history content
-        const historyContent = patientHistories[appointmentId][historyType];
-
-        // Format and display the content
-        modalBody.innerHTML = `<p style="white-space: pre-line;">${historyContent}</p>`;
-
-        // Display the modal
-        modal.style.display = "block";
-
-        // Prevent default link behavior
-        event.preventDefault();
-      }
-
-      // Function to close the history modal
-      function closeHistoryModal() {
-        const modal = document.getElementById("historyModal");
-        modal.style.display = "none";
-      }
-
-      // Close the modal if the user clicks outside of it
-      window.onclick = function (event) {
-        const modal = document.getElementById("historyModal");
-        if (event.target === modal) {
-          modal.style.display = "none";
-        }
-      };
-
-      // Function to start a call - modified to redirect to doc_videocall.html
+      // Start video call - MODIFIED FUNCTION
       function startCall(appointmentId) {
-        // Save the appointment info to session storage if needed
-        sessionStorage.setItem("currentAppointmentId", appointmentId);
-        sessionStorage.setItem(
-          "currentPatientName",
-          appointments.find((a) => a.id === appointmentId).patientName
+        const appointment = appointments.find((a) => a.id === appointmentId);
+
+        // Store appointment data for the video call page
+        localStorage.setItem("currentAppointment", JSON.stringify(appointment));
+
+        // Redirect to video call page
+        window.location.href = `doc_videocall.html?appointmentId=${appointmentId}`;
+      }
+
+      // Complete appointment
+      function completeAppointmentPrompt(appointmentId) {
+        const appointment = appointments.find((a) => a.id === appointmentId);
+        const notes = prompt(
+          `Enter notes for ${appointment.patientName}'s appointment:`
         );
 
-        // Redirect to the video call page
-        window.location.href = "doc_videocall.html";
+        if (notes !== null) {
+          appointment.status = "completed";
+          appointment.notes = notes;
+          renderAppointments();
+          showToast(
+            `Appointment with ${appointment.patientName} marked as complete`,
+            "success"
+          );
+        }
+      }
+
+      // Cancel appointment
+      function cancelAppointment() {
+        if (!currentAppointmentId) return;
+
+        const appointment = appointments.find(
+          (a) => a.id === currentAppointmentId
+        );
+        const reason = prompt(
+          `Reason for canceling ${appointment.patientName}'s appointment:`
+        );
+
+        if (reason) {
+          appointment.status = "canceled";
+          appointment.cancelReason = reason;
+          renderAppointments();
+          closeModal();
+          showToast(
+            `Appointment with ${appointment.patientName} has been canceled`,
+            "success"
+          );
+        }
+      }
+
+      // Search functionality
+      function handleSearch() {
+        const searchTerm = searchInput.value.toLowerCase();
+
+        if (!searchTerm) {
+          renderAppointments();
+          return;
+        }
+
+        const results = appointments.filter(
+          (appointment) =>
+            appointment.patientName.toLowerCase().includes(searchTerm) ||
+            appointment.problem.toLowerCase().includes(searchTerm) ||
+            appointment.contact.includes(searchTerm)
+        );
+
+        renderAppointments(results);
+      }
+
+      // Filter functionality
+      function toggleFilter() {
+        currentFilter = currentFilter === "all" ? "upcoming" : "all";
+        filterBtn.innerHTML = `
+                <i class="fas fa-filter"></i>
+                <span>${currentFilter === "all" ? "All" : "Upcoming"}</span>
+            `;
+
+        if (currentFilter === "all") {
+          renderAppointments(appointments);
+        } else {
+          const upcoming = appointments.filter(
+            (a) => a.status === "upcoming" || a.status === "in-progress"
+          );
+          renderAppointments(upcoming);
+        }
       }
 
       // Initialize the app
-      document.addEventListener("DOMContentLoaded", () => {
+      function init() {
         renderAppointments();
-      });
+
+        // Event listeners
+        searchInput.addEventListener("input", handleSearch);
+        filterBtn.addEventListener("click", toggleFilter);
+
+        // Close modal when clicking outside
+        window.addEventListener("click", (event) => {
+          if (event.target === historyModal) {
+            closeModal();
+          }
+        });
+      }
+
+      // Start the app
+      document.addEventListener("DOMContentLoaded", init);
     </script>
   </body>
 </html>

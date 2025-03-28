@@ -1,222 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Common Health Problems</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
 
-        body {
-            background-color: #f0f8ff;
-            padding: 20px;
-        }
+      body {
+        background-color: #f0f8ff;
+        padding: 20px;
+      }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
 
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .header h1 {
+        color: #1a73e8;
+        font-size: 2.5em;
+        font-family: Georgia, serif;
+        margin-bottom: 5px;
+      }
+
+      .language-selector {
+        padding: 10px 20px;
+        background-color: white;
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 200px;
+        text-align: center;
+        font-size: 1em;
+        margin-top: 10px;
+      }
+
+      .language-selector:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        padding: 20px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        cursor: pointer;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .card-content {
+        padding: 20px;
+        text-align: center;
+      }
+
+      .card-title {
+        color: #1a73e8;
+        font-size: 1.4em;
+        margin-bottom: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .grid-container {
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         }
 
         .header h1 {
-            color: #1a73e8;
-            font-size: 2.5em;
-            font-family: Georgia, serif;
-            margin-bottom: 5px;
+          font-size: 2em;
         }
-
-        .language-selector {
-            padding: 10px 20px;
-            background-color: white;
-            border: none;
-            border-radius: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 200px;
-            text-align: center;
-            font-size: 1em;
-            margin-top: 10px;
-        }
-
-        .language-selector:hover {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            transform: translateY(-2px);
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            padding: 20px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-
-        a{
-            text-decoration: none;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .card-content {
-            padding: 20px;
-            text-align: center;
-        }
-
-        .card-title {
-            color: #1a73e8;
-            font-size: 1.4em;
-            margin-bottom: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .grid-container {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            }
-
-            .header h1 {
-                font-size: 2em;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="header">
-            <h1>Common Health Problems</h1>
-            <select class="language-selector">
-                <option value="en">English</option>
-                <option value="hi">हिंदी</option>
-                <option value="fr">other</option>
-            </select>
-        </div>
-        
-        <div class="grid-container">
-            <a href="appointment.html">
-            <div class="card" >
-                <img src="img1.png" alt="Cough and Cold">
-                <div class="card-content">
-                    <h2 class="card-title">Cough and Cold Problems</h2>
-                </div>
+      <div class="header">
+        <h1>Common Health Problems</h1>
+        <select class="language-selector">
+          <option value="en">English</option>
+          <option value="hi">हिंदी</option>
+          <option value="fr">other</option>
+        </select>
+      </div>
+
+      <div class="grid-container">
+        <a href="appointment.html">
+          <div class="card">
+            <img src="img1.png" alt="Cough and Cold" />
+            <div class="card-content">
+              <h2 class="card-title">Cough and Cold Problems</h2>
             </div>
+          </div>
         </a>
         <a href="appointment.html">
-            <div class="card">
-                <img src="img2.png" alt="Period Problems">
-                <div class="card-content">
-                    <h2 class="card-title">Period Problems</h2>
-                </div>
+          <div class="card">
+            <img src="img2.png" alt="Period Problems" />
+            <div class="card-content">
+              <h2 class="card-title">Period Problems</h2>
             </div>
-            </a>
-            <a href="appointment.html">
-            <div class="card">
-                <img src="img3.png" alt="Skin Problems">
-                <div class="card-content">
-                    <h2 class="card-title">Skin Problems</h2>
-                </div>
+          </div>
+        </a>
+        <a href="appointment.html">
+          <div class="card">
+            <img src="img3.png" alt="Skin Problems" />
+            <div class="card-content">
+              <h2 class="card-title">Skin Problems</h2>
             </div>
-            </a>
+          </div>
+        </a>
 
-            <a href="appointment.html">
-            <div class="card">
-                <img src="img4.png" alt="Stomach Problems">
-                <div class="card-content">
-                    <h2 class="card-title">Stomach Problems</h2>
-                </div>
+        <a href="appointment.html">
+          <div class="card">
+            <img src="img4.png" alt="Stomach Problems" />
+            <div class="card-content">
+              <h2 class="card-title">Stomach Problems</h2>
             </div>
-            </a>
-            <a href="appointment.html">
-            <div class="card">
-                <img src="img5.png" alt="Children Problems">
-                <div class="card-content">
-                    <h2 class="card-title">Children Problems</h2>
-                </div>
+          </div>
+        </a>
+        <a href="appointment.html">
+          <div class="card">
+            <img src="img5.png" alt="Children Problems" />
+            <div class="card-content">
+              <h2 class="card-title">Children Problems</h2>
             </div>
-            </a>
-            <a href="appointment.html">
-            <div class="card">
-                <img src="img6.png" alt="Other Symptoms">
-                <div class="card-content">
-                    <h2 class="card-title">Other Symptoms</h2>
-                </div>
+          </div>
+        </a>
+        <a href="appointment.html">
+          <div class="card">
+            <img src="img6.png" alt="Other Symptoms" />
+            <div class="card-content">
+              <h2 class="card-title">Other Symptoms</h2>
             </div>
-            </a>
-        </div>
+          </div>
+        </a>
+      </div>
     </div>
 
     <script>
-        const languageSelector = document.querySelector('.language-selector');
-        const translations = {
-            'en': {
-                title: 'Common Health Problems',
-                cough: 'Cough and Cold Problems',
-                period: 'Period Problems',
-                skin: 'Skin Problems',
-                stomach: 'Stomach Problems',
-                children: 'Children Problems',
-                other: 'Other Symptoms'
-            },
-            'es': {
-                title: 'Problemas Comunes de Salud',
-                cough: 'Problemas de Tos y Resfriado',
-                period: 'Problemas Menstruales',
-                skin: 'Problemas de la Piel',
-                stomach: 'Problemas Estomacales',
-                children: 'Problemas Infantiles',
-                other: 'Otros Síntomas'
-            }
-            
-        };
+      const languageSelector = document.querySelector(".language-selector");
+      const translations = {
+        en: {
+          title: "Common Health Problems",
+          cough: "Cough and Cold Problems",
+          period: "Period Problems",
+          skin: "Skin Problems",
+          stomach: "Stomach Problems",
+          children: "Children Problems",
+          other: "Other Symptoms",
+        },
+        es: {
+          title: "Problemas Comunes de Salud",
+          cough: "Problemas de Tos y Resfriado",
+          period: "Problemas Menstruales",
+          skin: "Problemas de la Piel",
+          stomach: "Problemas Estomacales",
+          children: "Problemas Infantiles",
+          other: "Otros Síntomas",
+        },
+      };
 
-        languageSelector.addEventListener('change', (e) => {
-            const lang = e.target.value;
-            if (translations[lang]) {
-                document.querySelector('.header h1').textContent = translations[lang].title;
-                const titles = document.querySelectorAll('.card-title');
-                titles[0].textContent = translations[lang].cough;
-                titles[1].textContent = translations[lang].period;
-                titles[2].textContent = translations[lang].skin;
-                titles[3].textContent = translations[lang].stomach;
-                titles[4].textContent = translations[lang].children;
-                titles[5].textContent = translations[lang].other;
-            }
-        });
+      languageSelector.addEventListener("change", (e) => {
+        const lang = e.target.value;
+        if (translations[lang]) {
+          document.querySelector(".header h1").textContent =
+            translations[lang].title;
+          const titles = document.querySelectorAll(".card-title");
+          titles[0].textContent = translations[lang].cough;
+          titles[1].textContent = translations[lang].period;
+          titles[2].textContent = translations[lang].skin;
+          titles[3].textContent = translations[lang].stomach;
+          titles[4].textContent = translations[lang].children;
+          titles[5].textContent = translations[lang].other;
+        }
+      });
 
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('click', () => {
-                console.log('Navigating to:', card.querySelector('.card-title').textContent);
-            });
+      document.querySelectorAll(".card").forEach((card) => {
+        card.addEventListener("click", () => {
+          const problem = card.querySelector(".card-title").textContent;
+          localStorage.setItem("selectedProblem", problem);
+          console.log(
+            "Navigating to:",
+            card.querySelector(".card-title").textContent
+          );
         });
+      });
     </script>
-</body>
+  </body>
 </html>

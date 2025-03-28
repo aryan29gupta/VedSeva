@@ -10,41 +10,59 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <!-- Add jsPDF library for PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <title>Doctor's Profile</title>
+    <title>Dr. Mohit Chopra - Professional Profile</title>
     <style>
+      :root {
+        --primary-color: #2d6cc0;
+        --secondary-color: #1b2a41;
+        --background-light: #ebf2fa;
+        --text-light: #f8f9fa;
+        --accent-color: #28a745;
+        --warning-color: #dc3545;
+      }
+
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       }
 
       body {
         display: flex;
-        height: 100vh;
+        min-height: 100vh;
+        background-color: var(--background-light);
+        color: #333;
+        line-height: 1.6;
       }
 
       .sidebar {
-        width: 225px;
-        background-color: #1b2a41;
-        color: white;
+        width: 250px;
+        background-color: var(--secondary-color);
+        color: var(--text-light);
         display: flex;
         flex-direction: column;
+        transition: width 0.3s ease;
+        overflow: hidden;
       }
 
       .profile-pic-container {
-        padding: 20px;
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .profile-pic {
-        width: 180px;
-        height: 180px;
+        width: 200px;
+        height: 200px;
         border-radius: 50%;
+        border: 4px solid var(--primary-color);
         overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       }
 
       .profile-pic img {
@@ -54,14 +72,28 @@
       }
 
       .menu-item {
-        padding: 20px;
-        font-size: 1.2rem;
+        padding: 15px 25px;
+        font-size: 1.1rem;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        transition: background-color 0.3s ease;
+      }
+
+      .menu-item i {
+        min-width: 25px;
+        text-align: center;
+      }
+
+      .menu-item:hover {
+        background-color: rgba(255, 255, 255, 0.1);
       }
 
       .menu-item.active {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.2);
+        border-left: 4px solid var(--primary-color);
       }
 
       .sign-out {
@@ -72,15 +104,21 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
+        transition: background-color 0.3s ease;
       }
+
+      .sign-out:hover {
+        background-color: rgba(255, 0, 0, 0.1);
+      }
+
       .sign-out i {
         margin-left: 10px;
+        color: #ff6b6b;
       }
 
       .main-content {
         flex: 1;
-        background-color: #ebf2fa;
-        padding: 20px;
+        padding: 30px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -88,24 +126,26 @@
 
       .profile-card {
         background-color: white;
-        border-radius: 10px;
+        border-radius: 15px;
         width: 100%;
-        max-width: 800px;
-        padding: 30px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 900px;
+        padding: 40px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        position: relative;
       }
 
       .card-title {
-        color: #2d6cc0;
-        font-size: 2.5rem;
+        color: var(--primary-color);
+        font-size: 2.7rem;
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 35px;
+        font-weight: 600;
       }
 
       .card-content {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 30px;
       }
 
       .metrics-container {
@@ -113,138 +153,199 @@
         min-width: 300px;
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 25px;
       }
 
       .info-box {
-        background-color: #f8f9fa;
-        padding: 20px;
-        border-radius: 8px;
+        background-color: var(--background-light);
+        padding: 25px;
+        border-radius: 10px;
+        text-align: center;
+        transition: transform 0.3s ease;
+      }
+
+      .info-box:hover {
+        transform: scale(1.03);
       }
 
       .info-title {
-        font-size: 1.1rem;
-        font-weight: normal;
+        font-size: 1.2rem;
+        color: var(--secondary-color);
         margin-bottom: 15px;
-        text-align: center;
       }
 
       .info-value {
-        font-size: 1.8rem;
+        font-size: 2rem;
         font-weight: bold;
-        text-align: center;
-        color: #2d6cc0;
+        color: var(--primary-color);
       }
 
       .personal-info {
         flex: 1;
         min-width: 300px;
-        background-color: #f8f9fa;
-        padding: 20px;
-        border-radius: 8px;
+        background-color: var(--background-light);
+        padding: 30px;
+        border-radius: 10px;
       }
 
       .personal-info-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin-bottom: 20px;
+        font-size: 1.8rem;
+        margin-bottom: 25px;
         text-align: center;
-        color: #1b2a41;
+        color: var(--secondary-color);
       }
 
       .personal-info-detail {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .personal-info-detail i {
+        margin-right: 15px;
+        color: var(--primary-color);
+        min-width: 25px;
+        text-align: center;
       }
 
       .address {
         text-align: center;
         margin-top: 25px;
         font-weight: bold;
-      }
-
-      .edit-button {
-        display: block;
-        margin-left: auto;
-        margin-top: 20px;
-        padding: 10px 20px;
-        background-color: #2d6cc0;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-      }
-
-      .save-button {
-        display: none;
-        margin-left: auto;
-        margin-top: 20px;
-        padding: 10px 20px;
-        background-color: #28a745;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-      }
-
-      .cancel-button {
-        display: none;
-        margin-right: 10px;
-        margin-top: 20px;
-        padding: 10px 20px;
-        background-color: #dc3545;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-      }
-
-      .button-group {
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
       }
 
       .editable {
         display: none;
         width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+        padding: 12px;
+        border: 2px solid var(--primary-color);
+        border-radius: 8px;
         font-size: 1rem;
         margin-bottom: 15px;
+        transition: border-color 0.3s ease;
       }
 
-      .editable-address {
-        text-align: center;
+      .editable:focus {
+        outline: none;
+        border-color: var(--accent-color);
       }
 
-      /* Added for loading overlay */
+      .button-group {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 20px;
+      }
+
+      .button-group button {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-left: 10px;
+      }
+
+      .edit-button {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      .edit-button:hover {
+        background-color: #2462ad;
+      }
+
+      .save-button {
+        display: none;
+        background-color: var(--accent-color);
+        color: white;
+      }
+
+      .save-button:hover {
+        background-color: #218838;
+      }
+
+      .cancel-button {
+        display: none;
+        background-color: var(--warning-color);
+        color: white;
+      }
+
+      .cancel-button:hover {
+        background-color: #c82333;
+      }
+
       #loading-overlay {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        display: flex;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: none;
         justify-content: center;
         align-items: center;
         z-index: 9999;
-        display: none;
+      }
+
+      .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 5px solid var(--text-light);
+        border-top: 5px solid var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
 
       .loading-text {
         color: white;
         font-size: 1.5rem;
+        margin-left: 20px;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          flex-direction: row;
+          height: auto;
+        }
+
+        .profile-pic-container {
+          display: none;
+        }
+
+        .menu-item {
+          flex: 1;
+          justify-content: center;
+        }
+
+        .main-content {
+          padding: 15px;
+        }
+
+        .profile-card {
+          padding: 20px;
+        }
       }
     </style>
   </head>
   <body>
-    <!-- Loading overlay for sign out -->
     <div id="loading-overlay">
+      <div class="loading-spinner"></div>
       <div class="loading-text">Signing out...</div>
     </div>
 
@@ -254,9 +355,15 @@
           <img src="doc1.jpg" alt="Doctor's profile picture" />
         </div>
       </div>
-      <div class="menu-item active" id="appointments-menu">Appointments</div>
-      <div class="menu-item" id="experience-menu">Experience</div>
-      <div class="menu-item" id="share-profile-menu">Share Profile</div>
+      <div class="menu-item active" id="appointments-menu">
+        <i class="fas fa-calendar-alt"></i> Appointments
+      </div>
+      <div class="menu-item" id="experience-menu">
+        <i class="fas fa-briefcase"></i> Experience
+      </div>
+      <div class="menu-item" id="share-profile-menu">
+        <i class="fas fa-share-alt"></i> Share Profile
+      </div>
       <div class="sign-out">
         Sign out <i class="fa-solid fa-right-from-bracket"></i>
       </div>
@@ -269,12 +376,12 @@
         <div class="card-content">
           <div class="metrics-container">
             <div class="info-box">
-              <div class="info-title">Total Number of Consultations:</div>
+              <div class="info-title">Total Consultations</div>
               <div class="info-value">501</div>
             </div>
 
             <div class="info-box">
-              <div class="info-title">Total Work Experience:</div>
+              <div class="info-title">Total Work Experience</div>
               <div class="info-value">5 years</div>
             </div>
           </div>
@@ -283,7 +390,7 @@
             <div class="personal-info-title">Personal Information</div>
 
             <div class="personal-info-detail" id="name-display">
-              Name: Dr Mohit Chopra, (MD in General Medicine)
+              <i class="fas fa-user"></i> Dr Mohit Chopra, (MD in General Medicine)
             </div>
             <input
               type="text"
@@ -293,7 +400,7 @@
             />
 
             <div class="personal-info-detail" id="age-display">
-              Age: 33 years
+              <i class="fas fa-birthday-cake"></i> 33 years
             </div>
             <input
               type="text"
@@ -303,7 +410,7 @@
             />
 
             <div class="personal-info-detail" id="phone-display">
-              Phone: +91-XXXXXXXXXX
+              <i class="fas fa-phone"></i> +91-XXXXXXXXXX
             </div>
             <input
               type="text"
@@ -313,7 +420,7 @@
             />
 
             <div class="address" id="address-display">
-              17/10 Old Rajendra Nagar, New Delhi-110060
+              <i class="fas fa-map-marker-alt"></i> 17/10 Old Rajendra Nagar, New Delhi-110060
             </div>
             <input
               type="text"
@@ -362,19 +469,9 @@
 
         // Function to enter edit mode
         function enterEditMode() {
-          // Hide display elements
-          nameDisplay.style.display = "none";
-          ageDisplay.style.display = "none";
-          phoneDisplay.style.display = "none";
-          addressDisplay.style.display = "none";
+          [nameDisplay, ageDisplay, phoneDisplay, addressDisplay].forEach(el => el.style.display = "none");
+          [nameEdit, ageEdit, phoneEdit, addressEdit].forEach(el => el.style.display = "block");
 
-          // Show edit elements
-          nameEdit.style.display = "block";
-          ageEdit.style.display = "block";
-          phoneEdit.style.display = "block";
-          addressEdit.style.display = "block";
-
-          // Hide edit button, show save and cancel buttons
           editButton.style.display = "none";
           saveButton.style.display = "block";
           cancelButton.style.display = "block";
@@ -382,19 +479,9 @@
 
         // Function to exit edit mode
         function exitEditMode() {
-          // Show display elements
-          nameDisplay.style.display = "block";
-          ageDisplay.style.display = "block";
-          phoneDisplay.style.display = "block";
-          addressDisplay.style.display = "block";
+          [nameDisplay, ageDisplay, phoneDisplay, addressDisplay].forEach(el => el.style.display = "flex");
+          [nameEdit, ageEdit, phoneEdit, addressEdit].forEach(el => el.style.display = "none");
 
-          // Hide edit elements
-          nameEdit.style.display = "none";
-          ageEdit.style.display = "none";
-          phoneEdit.style.display = "none";
-          addressEdit.style.display = "none";
-
-          // Show edit button, hide save and cancel buttons
           editButton.style.display = "block";
           saveButton.style.display = "none";
           cancelButton.style.display = "none";
@@ -402,13 +489,20 @@
 
         // Function to save changes
         function saveChanges() {
-          // Update the display elements with the edited values
-          nameDisplay.textContent = `Name: ${nameEdit.value}`;
-          ageDisplay.textContent = `Age: ${ageEdit.value}`;
-          phoneDisplay.textContent = `Phone: ${phoneEdit.value}`;
-          addressDisplay.textContent = addressEdit.value;
+          // Validate inputs before saving
+          const validateInput = (input) => input.trim() !== "";
 
-          // Update original values with the new ones
+          if (!validateInput(nameEdit.value) || !validateInput(ageEdit.value) || 
+              !validateInput(phoneEdit.value) || !validateInput(addressEdit.value)) {
+            alert("Please fill in all fields.");
+            return;
+          }
+
+          nameDisplay.innerHTML = `<i class="fas fa-user"></i> ${nameEdit.value}`;
+          ageDisplay.innerHTML = `<i class="fas fa-birthday-cake"></i> ${ageEdit.value}`;
+          phoneDisplay.innerHTML = `<i class="fas fa-phone"></i> ${phoneEdit.value}`;
+          addressDisplay.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${addressEdit.value}`;
+
           originalValues = {
             name: nameEdit.value,
             age: ageEdit.value,
@@ -416,41 +510,31 @@
             address: addressEdit.value,
           };
 
-          // Exit edit mode
           exitEditMode();
         }
 
         // Function to cancel changes
         function cancelChanges() {
-          // Reset edit fields to original values
           nameEdit.value = originalValues.name;
           ageEdit.value = originalValues.age;
           phoneEdit.value = originalValues.phone;
           addressEdit.value = originalValues.address;
 
-          // Exit edit mode
           exitEditMode();
         }
 
         // Function to generate PDF
         function generatePDF() {
-          // Get the profile card element
           const profileCard = document.querySelector(".profile-card");
 
-          // Create a promise to handle the PDF generation
-          html2canvas(profileCard).then((canvas) => {
-            // Create a new PDF
+          html2canvas(profileCard, { scale: 2 }).then((canvas) => {
             const pdf = new jsPDF("p", "mm", "a4");
-
-            // Calculate the width and height to maintain aspect ratio
-            const imgWidth = 210; // A4 width in mm
-            const pageHeight = 297; // A4 height in mm
+            const imgWidth = 210;
+            const pageHeight = 297;
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
             const imgData = canvas.toDataURL("image/png");
             pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-
-            // Save the PDF
             pdf.save("doctor_profile.pdf");
           });
         }
@@ -460,28 +544,18 @@
         saveButton.addEventListener("click", saveChanges);
         cancelButton.addEventListener("click", cancelChanges);
 
-        // Add event listener for Appointments menu item to navigate to doc_appointments.html
-        document
-          .getElementById("appointments-menu")
-          .addEventListener("click", function () {
-            window.location.href = "doc_appointments.html";
-          });
+        // Menu navigation
+        document.getElementById("appointments-menu").addEventListener("click", function () {
+          window.location.href = "doc_appointments.html";
+        });
 
-        // Add event listener for Experience menu item
-        document
-          .getElementById("experience-menu")
-          .addEventListener("click", function () {
-            window.location.href = "doc_experience.html";
-          });
+        document.getElementById("experience-menu").addEventListener("click", function () {
+          window.location.href = "doc_experience.html";
+        });
 
-        // Add event listener for Share Profile menu item - Now generates PDF
-        document
-          .getElementById("share-profile-menu")
-          .addEventListener("click", function () {
-            generatePDF();
-          });
+        document.getElementById("share-profile-menu").addEventListener("click", generatePDF);
 
-        // Add click events for menu items (for styling active state)
+        // Active menu item styling
         const menuItems = document.querySelectorAll(".menu-item");
         menuItems.forEach((item) => {
           item.addEventListener("click", function () {
@@ -490,19 +564,17 @@
           });
         });
 
-        // Add click event for sign out - Modified to redirect to index.html after 2 seconds
-        document
-          .querySelector(".sign-out")
-          .addEventListener("click", function () {
-            if (confirm("Are you sure you want to sign out?")) {
-              const loadingOverlay = document.getElementById("loading-overlay");
-              loadingOverlay.style.display = "flex";
+        // Sign out functionality
+        document.querySelector(".sign-out").addEventListener("click", function () {
+          if (confirm("Are you sure you want to sign out?")) {
+            const loadingOverlay = document.getElementById("loading-overlay");
+            loadingOverlay.style.display = "flex";
 
-              setTimeout(function () {
-                window.location.href = "index.html";
-              }, 2000);
-            }
-          });
+            setTimeout(function () {
+              window.location.href = "index.html";
+            }, 2000);
+          }
+        });
       });
     </script>
   </body>
