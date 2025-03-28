@@ -92,6 +92,7 @@
 
       .card-content {
         padding: 2rem;
+        position: relative; /* Added for upload button positioning */
       }
 
       .appointment-card {
@@ -185,11 +186,66 @@
         color: var(--text-secondary);
       }
 
+      /* New Upload Prescription Button Styles */
+      .upload-prescription-btn {
+        position: absolute;
+        bottom: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--royal-blue);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: calc(100% - 4rem); /* Match card content width */
+      }
+
+      .upload-prescription-btn:hover {
+        background-color: var(--primary-dark);
+      }
+
       @media (max-width: 768px) {
         .cards-grid {
           grid-template-columns: 1fr;
         }
       }
+
+
+      .upload-prescription-btn {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--royal-blue);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: calc(100% - 4rem); /* Match card content width */
+  margin-top: auto; /* Ensures the button stays at the bottom */
+}
+
+.card-content {
+  padding: 2rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 300px; /* Ensure consistent height */
+}
+
+#appointmentsContainer {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  position: relative;
+}
+
+
+
     </style>
   </head>
   <body>
@@ -205,6 +261,7 @@
           <div class="card-header black-header">APPOINTMENTS</div>
           <div class="card-content" id="appointmentsContainer">
             <div class="empty-state">Loading appointments...</div>
+            <button class="upload-prescription-btn" onclick="redirectToQRScan()">Upload previous prescription</button>
           </div>
         </div>
         <div class="card">
@@ -234,6 +291,10 @@
         // Setup interval to check for expired appointments every minute
         setInterval(loadAppointments, 60000);
 
+        function redirectToQRScan() {
+          window.location.href = "qr_scan.html";
+        }
+
         function loadAppointments() {
           const savedAppointments =
             JSON.parse(localStorage.getItem("appointments")) || [];
@@ -242,7 +303,6 @@
           if (savedAppointments.length === 0) {
             appointmentsContainer.innerHTML =
               '<div class="empty-state">No appointments scheduled.</div>';
-            return;
           }
 
           const currentTime = new Date().getTime(); // Current time as timestamp
@@ -352,6 +412,13 @@
           pastAppointments.forEach((appointment) => {
             createAppointmentCard(appointment, true);
           });
+
+          // Always add upload prescription button
+          const uploadButton = document.createElement('button');
+          uploadButton.classList.add('upload-prescription-btn');
+          uploadButton.innerText = 'Upload previous prescription';
+          uploadButton.addEventListener('click', redirectToQRScan);
+          appointmentsContainer.appendChild(uploadButton);
 
           // Save updated list back to localStorage
           const updatedAppointments = [

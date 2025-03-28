@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live QR Code Scanner</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+        color: #333;
+      }
+
+      .container {
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      h1 {
+        color: #3366ff;
+        margin-bottom: 20px;
+        font-size: 2rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      #reader {
+        width: 300px;
+        margin: 20px auto;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(51, 102, 255, 0.2);
+      }
+
+      #result {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 20px;
+        color: #3366ff;
+        word-break: break-all;
+        padding: 10px;
+        background-color: #f0f4ff;
+        border-radius: 8px;
+      }
+
+      #webpageViewer {
+        width: 100%;
+        height: 600px;
+        margin-top: 20px;
+        border: 2px solid #3366ff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(51, 102, 255, 0.1);
+      }
+
+      .result-container {
+        background-color: #f0f4ff;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          padding: 15px;
+          width: 95%;
+        }
+
+        #reader {
+          width: 100%;
+        }
+
+        #webpageViewer {
+          height: 400px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Scan Previous Medical Prescriptions</h1>
+      <div id="reader"></div>
+      <div class="result-container">
+        <strong>Scanned Result:</strong> <span id="result"></span>
+      </div>
+    </div>
+    <iframe id="webpageViewer" style="display:none;"></iframe>
+
+    <script>
+      async function downloadWebpage(url) {
+        try {
+          // Fetch the webpage content
+          const response = await fetch(url);
+          const content = await response.text();
+
+          // Store the webpage content in localStorage
+          localStorage.setItem('downloadedWebpage', JSON.stringify({
+            url: url,
+            content: content,
+            timestamp: new Date().toISOString()
+          }));
+
+          // Show webpage in iframe
+          const webpageViewer = document.getElementById("webpageViewer");
+          webpageViewer.srcdoc = content;
+          webpageViewer.style.display = 'block';
+
+          // Alert user
+          const alertResult = confirm("Webpage Scanned and Saved: " + url + "\n\nPress OK to continue to video call.");
+          
+          if (alertResult) {
+            // Redirect to video call after 2 seconds
+            setTimeout(() => {
+              window.location.href = 'video.html';
+            }, 2000);
+          }
+
+        } catch (error) {
+          console.error('Download failed:', error);
+          alert('Failed to download webpage');
+        }
+      }
+
+      function onScanSuccess(decodedText, decodedResult) {
+        // Validate URL
+        try {
+          const url = new URL(decodedText);
+
+          // Update result text
+          document.getElementById("result").innerText = decodedText;
+
+          // Stop the scanner
+          scanner.stop().then(() => {
+            // Download and display webpage
+            downloadWebpage(decodedText);
+
+            // Alert user
+            console.log("Webpage Scanned and Downloaded: " + decodedText);
+          }).catch(err => {
+            console.error("Error stopping scanner", err);
+          });
+        } catch (error) {
+          alert("Invalid URL scanned");
+        }
+      }
+
+      let scanner = new Html5Qrcode("reader");
+
+      scanner.start(
+        { facingMode: "environment" }, // Uses the laptop's default camera
+        {
+          fps: 10, // Frames per second
+          qrbox: { width: 250, height: 250 }, // Size of the QR scanning box
+        },
+        onScanSuccess,
+        (errorMessage) => {
+          console.log(errorMessage);
+        }
+      );
+    </script>
+  </body>
+</html>
