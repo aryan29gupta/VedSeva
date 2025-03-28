@@ -492,10 +492,6 @@
             }, 3000);
 
             // Update booked slot
-
-            const selectedTime =
-              localStorage.getItem("selectedAppointmentTime") || "11:30 AM";
-
             const selectedSlot = document.querySelector(".time-slot.selected");
             if (selectedSlot) {
               selectedSlot.classList.remove("available", "selected");
